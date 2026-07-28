@@ -89,8 +89,5 @@ Detalhes completos no PDF em `docs/`.
 
 ## 7. Vídeo de demonstração
 
-Link do vídeo (2–5 min): _adicionar aqui após a gravação_
+Link do vídeo (2–5 min): 
 
-## 8. Autor
-
-Rafael — Trabalho individual, disciplina de Internet das Coisas (IoT).
