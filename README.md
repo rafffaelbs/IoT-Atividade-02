@@ -89,5 +89,5 @@ Detalhes completos no PDF em `docs/`.
 
 ## 7. Vídeo de demonstração
 
-Link do vídeo (2–5 min): 
+Link do vídeo (2–5 min): https://drive.google.com/file/d/1aDrMrNEkzFw5-y4IzJ9M3k5n0JWQHJCh/view?usp=sharing
 
