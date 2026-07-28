@@ -23,9 +23,6 @@ from datetime import datetime, timezone
 
 import paho.mqtt.client as mqtt
 
-# ---------------------------------------------------------------------------
-# Configuracao geral
-# ---------------------------------------------------------------------------
 BROKER_HOST = "broker.hivemq.com"
 BROKER_PORT = 1883
 USINA_ID = "us01"
@@ -52,8 +49,6 @@ class NoDeCampo:
 
         self.client = mqtt.Client(client_id=f"pub-{node_id}-{random.randint(1000,9999)}")
 
-        # Last Will: se o no cair sem se desconectar corretamente, o broker
-        # publica automaticamente este payload no topico de heartbeat.
         self.client.will_set(
             self.topico_heartbeat,
             payload=json.dumps({"ts": agora_iso(), "estado": "offline"}),
@@ -76,8 +71,6 @@ class NoDeCampo:
         print(f"[HEARTBEAT] {self.topico_heartbeat} -> {payload}")
 
     def publicar_evento(self, forcar=False):
-        # Probabilidade baixa de gerar evento a cada ciclo, simulando
-        # ocorrencias esporadicas de movimento/abertura/vibracao.
         if forcar or random.random() < 0.25:
             payload = self.gerador_payload()
             self.client.publish(self.topico_evento, json.dumps(payload), qos=self.qos, retain=self.retido)
@@ -85,7 +78,7 @@ class NoDeCampo:
 
 
 # ---------------------------------------------------------------------------
-# Geradores de payload de cada tipo de no (formato das mensagens)
+# Geradores de payload de cada tipo de nó
 # ---------------------------------------------------------------------------
 def payload_perimetro():
     return {
@@ -97,9 +90,10 @@ def payload_perimetro():
 
 
 def payload_portao():
+    estado = random.choices(["fechado", "aberto"], weights=[90, 10], k=1)[0]
     return {
         "ts": agora_iso(),
-        "estado": random.choice(["aberto", "fechado"]),
+        "estado": estado,
         "bateria_pct": round(random.uniform(60, 100), 1),
     }
 
@@ -142,7 +136,7 @@ def main():
     time.sleep(1)
 
     print(f"\nPublicando para o broker {BROKER_HOST}:{BROKER_PORT}")
-    print(f"Prefixo de topicos: \n")
+    print()
 
     ciclo = 0
     try:
